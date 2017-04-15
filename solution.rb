@@ -2,26 +2,36 @@ require 'sinatra'
 require 'make_todo'
 require_relative 'dao'
 
+get '/' do
+	erb :index, :locals => {:tasks => list_all}
+end
 
+get '/view_all' do
+	erb :index, :locals => {:tasks => list_all}
+end
 
 get '/view_incomplete' do
-	erb :tasks, :locals => {:tasks => list_incomplete}
+	erb :index, :locals => {:tasks => list_incomplete}
 end
 
 get '/view_complete' do
-	erb :tasks, :locals => {:tasks => list_complete}
+	erb :index, :locals => {:tasks => list_complete}
 end
 
 get '/create' do
-	Tarea.create("Titulo de la tarea")
+	title = params[:'title']
+	create(title)
+	erb :index, :locals => {:tasks => list_all}
 end
 
 get '/update' do
-	Tarea.find(id)
-	Tarea.update(id)
+	id = params[:'id']
+	update(id)
+	erb :index, :locals => {:tasks => list_all}
 end
 
-get '/destroy' do
-	Tarea.destroy(id)
-
+get '/remove' do
+	id = params[:'id']
+	remove(id)
+	erb :index, :locals => {:tasks => list_all}
 end

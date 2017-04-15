@@ -3,6 +3,12 @@ require 'json'
 require_relative "model"
 
 
+def list_all
+	json_list = Tarea.all
+	result = list_parse(json_list, nil)
+	return result
+end
+
 def list_complete
 	json_list = Tarea.all
 	result = list_parse(json_list, true)
@@ -17,18 +23,26 @@ def list_incomplete
 end
 
 
-def create
+def create(title)
+	Tarea.create(title)
 end
 
 
-def update
+def update(id)
+	Tarea.update(id)
+end
+
+def remove(id)
+	Tarea.destroy(id)
 end
 
 
 def list_parse(json_list, filter_done)
 	result = Array.new
 	json_list.each do |data|
-		result.push(obj_parse(data)) if data["done"]=filter_done
+		if data["done"]==filter_done || filter_done==nil 
+			result.push(obj_parse(data))
+		end
 	end
 	result
 end
